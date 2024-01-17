@@ -147,14 +147,14 @@ class _LinkedScrollController extends ScrollController {
 
   @override
   void attach(ScrollPosition position) {
-    assert(
-        position is _LinkedScrollPosition,
-        '_LinkedScrollControllers can only be used with'
-        ' _LinkedScrollPositions.');
-    final _LinkedScrollPosition linkedPosition =
-        position as _LinkedScrollPosition;
-    assert(linkedPosition.owner == this,
-        '_LinkedScrollPosition cannot change controllers once created.');
+    // assert(
+    //     position is _LinkedScrollPosition,
+    //     '_LinkedScrollControllers can only be used with'
+    //     ' _LinkedScrollPositions.');
+    // final _LinkedScrollPosition linkedPosition =
+    //     position as _LinkedScrollPosition;
+    // assert(linkedPosition.owner == this,
+    //     '_LinkedScrollPosition cannot change controllers once created.');
     super.attach(position);
   }
 
@@ -175,8 +175,8 @@ class _LinkedScrollController extends ScrollController {
       ? super.initialScrollOffset
       : _controllers.offset;
 
-  @override
-  _LinkedScrollPosition get position => super.position as _LinkedScrollPosition;
+  // @override
+  // _LinkedScrollPosition get position => super.position as _LinkedScrollPosition;
 
   Iterable<_LinkedScrollController> get _allPeersWithClients =>
       _controllers._attachedControllers.where((peer) => peer != this);
@@ -230,7 +230,8 @@ class _LinkedScrollPosition extends ScrollPositionWithSingleContext {
   @override
   ScrollHoldController hold(VoidCallback holdCancelCallback) {
     for (final controller in owner._allPeersWithClients) {
-      controller.position._holdInternal();
+      final position = controller.position;
+      if (position is _LinkedScrollPosition) position._holdInternal();
     }
     return super.hold(holdCancelCallback);
   }
